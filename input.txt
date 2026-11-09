@@ -1,0 +1,23 @@
+# Computational Excercise Lennard Jones Liquid - Statistical Mechanics
+
+#Sytem parameters
+N   500     # Number of particles
+L   8.5     # Box length
+
+#Potential parameter
+rc  2.5     # RC
+
+#Ensemble parameter
+T   1.0     # Temperature
+
+#Integration parameters
+time_step   0.0005
+n_steps     10000
+
+# Thermostat parameter
+thermostat  nhc     # Currently Nosee Hoover Chain only implemented
+
+# Initialization and Output parameters
+seed    42
+thermo_every    100
+traj_every      1000
