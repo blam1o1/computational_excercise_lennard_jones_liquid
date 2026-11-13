@@ -6,6 +6,9 @@
 #include <cmath>
 
 // Lennard Jones force potential and force calculation
+
+// V(r) = 4 * epsilon[ (sigma/r)^12 - (sigma/r)^6 ]
+
 struct LennardJones {
     double sigma = 1.0;
     double epsilon = 1.0;
