@@ -1,5 +1,6 @@
 // header file for vec3.cpp
 #pragma once
+#include <ostream>
 #include <cmath>
 
 // no need to implement vec3.cpp, we can define everythign inline in vec3.h

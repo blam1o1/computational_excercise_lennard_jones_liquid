@@ -1,42 +1,47 @@
-// header file for params.cpp
+
 #pragma once
+
 #include <string>
+#include <ostream>
+#include <cmath>
 
-
-// Params struct to store all simulation parameters, defined in input.txt 
 struct Params {
-    
+
     // System parameters
-    int N = 500;
-    double L = 8.5;
-    double mass = 39.98; // in atomic mass units
-    double density = 0.02 // angstroms^-3
+    int N = 864;
+    double mass = 39.98;        // atomic mass units
+    double density = 0.02;      // Angstrom^-3
 
+    // Cubic simulation box (Angstrom)
+    double L = std::cbrt(N / density);
 
-    // Potential 
-    double rc = 2.5;
+    // Lennard-Jones potential
+    double sigma = 3.405;       // Angstrom
+    double epsilon_K = 119.8;   // epsilon / kB, Kelvin
+    double rc_sigma = 2.5;      // cutoff in units of sigma
 
-    // Ensemble 
-    double T = 1.0;
+    // Ensemble
+    double T = 100.0;           // Kelvin
 
     // Integration parameters
-    double time_step = 0.0005;
+    double time_step = 0.0005;  // Units must be defined
     int n_steps = 10000;
 
     // Thermostat
-    std::string thermostat = "nvh";
+    std::string thermostat = "nhc";
 
-    // Seed
+    // Random seed
     unsigned seed = 42;
 
-    // Initialization and Output parameters
+    // Output parameters
     int thermo_every = 100;
     int traj_every = 1000;
-
 };
 
 Params read_params(const std::string& filename);
 
 void check_params(const Params& params);
+
 void print_params(const Params& params, std::ostream& os);
+
 
