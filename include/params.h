@@ -34,9 +34,16 @@ struct Params {
 
     // Initialization and output
     unsigned seed = 42;
-    int thermo_every = 100;
-    int traj_every = 1000;
-    int sample_every = 10;          // structural sampling interval (g(r), S(q), used later)
+    int thermo_every = 100;         // thermo_equil.dat / thermo_prod.dat line interval, steps
+    int traj_every = 1000;          // trajectory.xyz frame interval, steps (whole run)
+    int sample_every = 10;          // g(r) sampling interval, steps (production only)
+    std::string output_prefix;      // prepended to every output file name (default: none)
+
+    // Observables
+    double gr_dr = 0.05;            // g(r) bin width, A
+    double sq_qmin = 0.5;           // S(q) grid start, A^-1
+    double sq_qmax = 15.0;          // S(q) grid end, A^-1
+    double sq_dq = 0.01;            // S(q) grid spacing, A^-1
 };
 
 Params read_params(const std::string& filename);

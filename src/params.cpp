@@ -56,6 +56,11 @@ Params read_params(const std::string& filename) {
         else if (key == "thermo_every")  param >> p.thermo_every;
         else if (key == "traj_every")    param >> p.traj_every;
         else if (key == "sample_every")  param >> p.sample_every;
+        else if (key == "output_prefix") param >> p.output_prefix;
+        else if (key == "gr_dr")         param >> p.gr_dr;
+        else if (key == "sq_qmin")       param >> p.sq_qmin;
+        else if (key == "sq_qmax")       param >> p.sq_qmax;
+        else if (key == "sq_dq")         param >> p.sq_dq;
         else if (key == "L")
             throw std::runtime_error("'L' is not an input: it is derived as (N / density)^(1/3)");
         else throw std::runtime_error("Unknown parameter: " + key);
@@ -128,6 +133,13 @@ void check_params(const Params& p) {
     require(p.thermo_every > 0, "thermo_every must be positive");
     require(p.traj_every > 0, "traj_every must be positive");
     require(p.sample_every > 0, "sample_every must be positive");
+
+    // observables
+    require(p.gr_dr > 0, "gr_dr must be positive");
+    require(p.gr_dr < 0.5 * L, "gr_dr must be smaller than L/2");
+    require(p.sq_qmin > 0, "sq_qmin must be positive");
+    require(p.sq_qmax > p.sq_qmin, "sq_qmax must be larger than sq_qmin");
+    require(p.sq_dq > 0, "sq_dq must be positive");
 }
 
 
@@ -148,5 +160,8 @@ void print_params(const Params& p, std::ostream& os) {
     os << "#   dt = " << p.dt << " ps, n_equil = " << p.n_equil << " (" << p.n_equil * p.dt
        << " ps), n_prod = " << p.n_prod << " (" << p.n_prod * p.dt << " ps)\n"
        << "#   seed = " << p.seed << ", thermo_every = " << p.thermo_every
-       << ", traj_every = " << p.traj_every << ", sample_every = " << p.sample_every << "\n";
+       << ", traj_every = " << p.traj_every << ", sample_every = " << p.sample_every << "\n"
+       << "#   g(r): dr = " << p.gr_dr << " A, r_max = L/2 = " << 0.5 * box_length(p) << " A; S(q): q = "
+       << p.sq_qmin << " ... " << p.sq_qmax << " A^-1, dq = " << p.sq_dq << " A^-1\n";
+    if (!p.output_prefix.empty()) os << "#   output_prefix = " << p.output_prefix << "\n";
 }
